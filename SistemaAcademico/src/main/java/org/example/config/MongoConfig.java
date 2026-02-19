@@ -20,7 +20,7 @@ public class MongoConfig implements DatabaseConnection {
     private boolean connectionActive = false;
     
     // Configuración de conexión
-    private static final String CONNECTION_STRING = "mongodb+srv://root:aobregonr1918@cluster0.oofaaro.mongodb.net/";
+    private static final String CONNECTION_STRING = "mongodb+srv://root:password@cluster0.oofaaro.mongodb.net/";
     private static final String DATABASE_NAME = "sistema_academico";
     
     // Constructor privado para Singleton
