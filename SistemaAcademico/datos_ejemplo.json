@@ -1,0 +1,104 @@
+{
+  "estudiantes": [
+    {
+      "nombre": "María González Pérez",
+      "identificacion": "123456789",
+      "email": "maria.gonzalez@ucenfotec.ac.cr",
+      "fecha_nacimiento": "1995-03-15",
+      "estado": "activo"
+    },
+    {
+      "nombre": "Carlos Rodríguez Jiménez",
+      "identificacion": "987654321",
+      "email": "carlos.rodriguez@ucenfotec.ac.cr",
+      "fecha_nacimiento": "1994-07-22",
+      "estado": "activo"
+    },
+    {
+      "nombre": "Ana Sofía Vargas",
+      "identificacion": "456789123",
+      "email": "ana.vargas@ucenfotec.ac.cr",
+      "fecha_nacimiento": "1996-11-08",
+      "estado": "activo"
+    }
+  ],
+  "profesores": [
+    {
+      "nombre": "Dr. Roberto Méndez Castro",
+      "identificacion": "112233445",
+      "email": "roberto.mendez@ucenfotec.ac.cr",
+      "departamento": "Ingeniería de Software",
+      "estado": "activo"
+    },
+    {
+      "nombre": "Msc. Laura Fernández Ruiz",
+      "identificacion": "556677889",
+      "email": "laura.fernandez@ucenfotec.ac.cr",
+      "departamento": "Programación",
+      "estado": "activo"
+    },
+    {
+      "nombre": "Dr. José Luis Ramírez",
+      "identificacion": "998877665",
+      "email": "jose.ramirez@ucenfotec.ac.cr",
+      "departamento": "Base de Datos",
+      "estado": "activo"
+    }
+  ],
+  "grupos": [
+    {
+      "nombre": "Grupo A - Ingeniería Software",
+      "descripcion": "Grupo principal de estudiantes de Ingeniería de Software, primer semestre",
+      "estado": "activo"
+    },
+    {
+      "nombre": "Grupo B - Programación Avanzada",
+      "descripcion": "Grupo de estudiantes avanzados en programación orientada a objetos",
+      "estado": "activo"
+    },
+    {
+      "nombre": "Grupo C - Base de Datos",
+      "descripcion": "Grupo especializado en sistemas de gestión de bases de datos",
+      "estado": "activo"
+    }
+  ],
+  "cursos": [
+    {
+      "nombre": "Programación con Patrones",
+      "descripcion": "Curso avanzado de patrones de diseño en programación orientada a objetos",
+      "estado": "activo"
+    },
+    {
+      "nombre": "Base de Datos II",
+      "descripcion": "Curso intermedio de diseño y administración de bases de datos relacionales y NoSQL",
+      "estado": "activo"
+    },
+    {
+      "nombre": "Ingeniería de Software I",
+      "descripcion": "Introducción a los principios y metodologías de la ingeniería de software",
+      "estado": "activo"
+    },
+    {
+      "nombre": "Desarrollo Web Full Stack",
+      "descripcion": "Curso práctico de desarrollo de aplicaciones web front-end y back-end",
+      "estado": "activo"
+    }
+  ],
+  "relaciones_grupo_curso": [
+    {
+      "descripcion": "Grupo A - Ingeniería Software toma Ingeniería de Software I"
+    },
+    {
+      "descripcion": "Grupo A - Ingeniería Software toma Programación con Patrones"
+    },
+    {
+      "descripcion": "Grupo B - Programación Avanzada toma Programación con Patrones"
+    },
+    {
+      "descripcion": "Grupo B - Programación Avanzada toma Desarrollo Web Full Stack"
+    },
+    {
+      "descripcion": "Grupo C - Base de Datos toma Base de Datos II"
+    }
+  ]
+}
