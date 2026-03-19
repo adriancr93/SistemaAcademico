@@ -3,7 +3,7 @@ package org.example.view;
 import org.bson.types.ObjectId;
 import org.example.model.Estudiante;
 import org.example.service.EstudianteService;
-import org.example.service.impl.EstudianteServiceImpl;
+import org.example.service.ServiceFactory;
 import org.example.util.ValidationUtil;
 
 import java.time.LocalDate;
@@ -11,14 +11,17 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Vista para la gestión de estudiantes
+ * Vista para la gestión de estudiantes.
+ * Ahora obtiene el servicio desde ServiceFactory en vez de instanciar directamente.
  */
 public class EstudianteView {
     
     private final EstudianteService estudianteService;
     
+    // Antes: this.estudianteService = new EstudianteServiceImpl();
+    // Ahora usa ServiceFactory para desacoplar la vista del servicio concreto
     public EstudianteView() {
-        this.estudianteService = new EstudianteServiceImpl();
+        this.estudianteService = ServiceFactory.getInstance().getEstudianteService();
     }
     
     /**

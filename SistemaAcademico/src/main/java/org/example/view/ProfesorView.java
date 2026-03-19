@@ -3,20 +3,23 @@ package org.example.view;
 import org.bson.types.ObjectId;
 import org.example.model.Profesor;
 import org.example.service.ProfesorService;
-import org.example.service.impl.ProfesorServiceImpl;
+import org.example.service.ServiceFactory;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Vista para la gestión de profesores
+ * Vista para la gestión de profesores.
+ * Ahora obtiene el servicio desde ServiceFactory en vez de instanciar directamente.
  */
 public class ProfesorView {
     
     private final ProfesorService profesorService;
     
+    // Antes: this.profesorService = new ProfesorServiceImpl();
+    // Ahora usa ServiceFactory para desacoplar
     public ProfesorView() {
-        this.profesorService = new ProfesorServiceImpl();
+        this.profesorService = ServiceFactory.getInstance().getProfesorService();
     }
     
     /**
@@ -85,7 +88,6 @@ public class ProfesorView {
         System.out.println("│  5. 🏢 Buscar profesores por departamento                                     │");
         System.out.println("│  6. ✏️  Actualizar profesor                                                    │");
         System.out.println("│  7. 🗑️  Eliminar profesor                                                     │");
-        System.out.println("│  8. 📊 Mostrar estadísticas                                                   │");
         System.out.println("│  0. ⬅️  Volver al menú principal                                               │");
         System.out.println("└─────────────────────────────────────────────────────────────────────────────┘");
         System.out.println();

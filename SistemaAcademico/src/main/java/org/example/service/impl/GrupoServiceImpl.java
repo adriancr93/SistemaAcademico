@@ -3,7 +3,7 @@ package org.example.service.impl;
 import org.bson.types.ObjectId;
 import org.example.model.Grupo;
 import org.example.repository.GrupoRepository;
-import org.example.repository.impl.GrupoRepositoryMongoDB;
+import org.example.repository.RepositoryFactory;
 import org.example.service.GrupoService;
 import org.example.util.ValidationUtil;
 
@@ -11,14 +11,17 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Implementación del servicio de Grupo
+ * Implementación del servicio de Grupo.
+ * Ahora obtiene el repositorio desde RepositoryFactory en vez de crear el impl directamente.
  */
 public class GrupoServiceImpl implements GrupoService {
     
     private final GrupoRepository grupoRepository;
     
+    // Antes: this.grupoRepository = new GrupoRepositoryMongoDB();
+    // Ahora usa RepositoryFactory para desacoplar
     public GrupoServiceImpl() {
-        this.grupoRepository = new GrupoRepositoryMongoDB();
+        this.grupoRepository = RepositoryFactory.getInstance().getGrupoRepository();
     }
     
     // Constructor para inyección de dependencias (útil para testing)

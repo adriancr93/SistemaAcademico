@@ -134,7 +134,6 @@ public class CursoRepositoryMongoDB implements CursoRepository {
     public List<Curso> findByNombreContaining(String nombre) {
         List<Curso> cursos = new ArrayList<>();
         try {
-            // Usar expresión regular para búsqueda insensible a mayúsculas
             Pattern pattern = Pattern.compile(nombre, Pattern.CASE_INSENSITIVE);
             try (MongoCursor<Document> cursor = collection.find(regex("nombre", pattern)).iterator()) {
                 while (cursor.hasNext()) {

@@ -3,7 +3,7 @@ package org.example.service.impl;
 import org.bson.types.ObjectId;
 import org.example.model.Curso;
 import org.example.repository.CursoRepository;
-import org.example.repository.impl.CursoRepositoryMongoDB;
+import org.example.repository.RepositoryFactory;
 import org.example.service.CursoService;
 import org.example.util.ValidationUtil;
 
@@ -11,14 +11,17 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Implementación del servicio de Curso
+ * Implementación del servicio de Curso.
+ * Ahora obtiene el repositorio desde RepositoryFactory en vez de crear el impl directamente.
  */
 public class CursoServiceImpl implements CursoService {
     
     private final CursoRepository cursoRepository;
     
+    // Antes: this.cursoRepository = new CursoRepositoryMongoDB();
+    // Ahora usa RepositoryFactory para desacoplar
     public CursoServiceImpl() {
-        this.cursoRepository = new CursoRepositoryMongoDB();
+        this.cursoRepository = RepositoryFactory.getInstance().getCursoRepository();
     }
     
     // Constructor para inyección de dependencias (útil para testing)

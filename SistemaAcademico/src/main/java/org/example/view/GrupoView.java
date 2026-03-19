@@ -3,20 +3,23 @@ package org.example.view;
 import org.bson.types.ObjectId;
 import org.example.model.Grupo;
 import org.example.service.GrupoService;
-import org.example.service.impl.GrupoServiceImpl;
+import org.example.service.ServiceFactory;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Vista para la gestión de grupos
+ * Vista para la gestión de grupos.
+ * Ahora obtiene el servicio desde ServiceFactory en vez de instanciar directamente.
  */
 public class GrupoView {
     
     private final GrupoService grupoService;
     
+    // Antes: this.grupoService = new GrupoServiceImpl();
+    // Ahora usa ServiceFactory para desacoplar
     public GrupoView() {
-        this.grupoService = new GrupoServiceImpl();
+        this.grupoService = ServiceFactory.getInstance().getGrupoService();
     }
     
     /**

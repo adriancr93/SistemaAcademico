@@ -29,9 +29,4 @@ public interface CrudOperations {
      * Eliminar un elemento
      */
     void eliminar();
-    
-    /**
-     * Mostrar estadísticas
-     */
-    void mostrarEstadisticas();
 }

@@ -5,16 +5,15 @@ import org.example.model.GrupoCurso;
 import org.example.repository.GrupoCursoRepository;
 import org.example.repository.GrupoRepository;
 import org.example.repository.CursoRepository;
-import org.example.repository.impl.GrupoCursoRepositoryMongoDB;
-import org.example.repository.impl.GrupoRepositoryMongoDB;
-import org.example.repository.impl.CursoRepositoryMongoDB;
+import org.example.repository.RepositoryFactory;
 import org.example.service.GrupoCursoService;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Implementación del servicio de GrupoCurso
+ * Implementación del servicio de GrupoCurso.
+ * Los 3 repositorios ahora se obtienen desde RepositoryFactory.
  */
 public class GrupoCursoServiceImpl implements GrupoCursoService {
     
@@ -22,10 +21,13 @@ public class GrupoCursoServiceImpl implements GrupoCursoService {
     private final GrupoRepository grupoRepository;
     private final CursoRepository cursoRepository;
     
+    // Antes se hacía: new GrupoCursoRepositoryMongoDB(), new GrupoRepositoryMongoDB(), etc.
+    // Ahora se usa RepositoryFactory para desacoplar
     public GrupoCursoServiceImpl() {
-        this.grupoCursoRepository = new GrupoCursoRepositoryMongoDB();
-        this.grupoRepository = new GrupoRepositoryMongoDB();
-        this.cursoRepository = new CursoRepositoryMongoDB();
+        RepositoryFactory factory = RepositoryFactory.getInstance();
+        this.grupoCursoRepository = factory.getGrupoCursoRepository();
+        this.grupoRepository = factory.getGrupoRepository();
+        this.cursoRepository = factory.getCursoRepository();
     }
     
     // Constructor para inyección de dependencias (útil para testing)

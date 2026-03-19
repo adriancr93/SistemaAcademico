@@ -20,15 +20,13 @@ public class MongoConfig implements DatabaseConnection {
     private boolean connectionActive = false;
     
     // Configuración de conexión
-    private static final String CONNECTION_STRING = "mongodb+srv://root:password@cluster0.oofaaro.mongodb.net/";
+    private static final String CONNECTION_STRING = "mongodb+srv://root:aobregonr1918@cluster0.oofaaro.mongodb.net/";
     private static final String DATABASE_NAME = "sistema_academico";
     
-    // Constructor privado para Singleton
     private MongoConfig() {
         inicializarConexion();
     }
-    
-    // Método para obtener la instancia única (Singleton)
+
     public static MongoConfig getInstance() {
         if (instance == null) {
             synchronized (MongoConfig.class) {
@@ -40,12 +38,8 @@ public class MongoConfig implements DatabaseConnection {
         return instance;
     }
     
-    /**
-     * Inicializar la conexión a MongoDB
-     */
     private void inicializarConexion() {
         try {
-            // Configurar timeout y opciones de conexión
             ConnectionString connectionString = new ConnectionString(CONNECTION_STRING);
             MongoClientSettings settings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
@@ -56,8 +50,6 @@ public class MongoConfig implements DatabaseConnection {
                 
             this.mongoClient = MongoClients.create(settings);
             this.database = mongoClient.getDatabase(DATABASE_NAME);
-            
-            // Verificar conexión
             if (testConnection()) {
                 this.connectionActive = true;
                 System.out.println("✅ Conexión establecida con MongoDB Atlas exitosamente");
@@ -73,8 +65,7 @@ public class MongoConfig implements DatabaseConnection {
             throw new RuntimeException("No se pudo establecer conexión con la base de datos", e);
         }
     }
-    
-    // Método para obtener la instancia de la base de datos
+
     public MongoDatabase getDatabase() {
         if (!connectionActive) {
             throw new RuntimeException("La conexión a la base de datos no está activa");
@@ -82,7 +73,6 @@ public class MongoConfig implements DatabaseConnection {
         return database;
     }
     
-    // Implementación de la interfaz DatabaseConnection
     @Override
     public boolean isConnected() {
         return connectionActive && mongoClient != null;
@@ -94,12 +84,10 @@ public class MongoConfig implements DatabaseConnection {
             if (mongoClient == null) {
                 return false;
             }
-            
-            // Intentar hacer una operación simple para verificar conectividad
+
             Document pingResult = mongoClient.getDatabase("admin")
                 .runCommand(new Document("ping", 1));
                 
-            // Verificar el resultado del ping - puede ser Integer o Double
             Object okValue = pingResult.get("ok");
             return (okValue != null && (
                 (okValue instanceof Integer && ((Integer) okValue) == 1) ||
@@ -141,18 +129,12 @@ public class MongoConfig implements DatabaseConnection {
         }
     }
     
-    /**
-     * Método para reconectar si se pierde la conexión
-     */
     public void reconnect() {
         System.out.println("🔄 Intentando reconexión...");
         closeConnection();
         inicializarConexion();
     }
     
-    /**
-     * Verificar y mostrar el estado de la conexión
-     */
     public void mostrarEstadoConexion() {
         System.out.println("\n" + "=".repeat(60));
         System.out.println("🔍 ESTADO DE CONEXIÓN A MONGODB ATLAS");

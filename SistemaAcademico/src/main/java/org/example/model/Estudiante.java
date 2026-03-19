@@ -1,15 +1,15 @@
 package org.example.model;
 
 import org.bson.Document;
-import org.bson.types.ObjectId;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Entidad que representa un Estudiante en el sistema académico
+ * Estudiante - extiende BaseModel para no repetir código del id, toDocument, etc.
+ * Se aplicó Template Method: BaseModel tiene la lógica común y cada modelo agrega sus campos.
  */
-public class Estudiante {
-    private ObjectId id;
+public class Estudiante extends BaseModel {
+    // Antes tenía: private ObjectId id; → ahora se hereda de BaseModel
     private String nombre;
     private String identificacion;
     private String email;
@@ -38,36 +38,27 @@ public class Estudiante {
         this.identificacion = doc.getString("identificacion");
         this.email = doc.getString("email");
         String fechaStr = doc.getString("fecha_nacimiento");
-        if (fechaStr != null) {
-            this.fechaNacimiento = LocalDate.parse(fechaStr);
-        }
+        // Ternario: si fechaStr no es null lo parsea, si no queda null
+        this.fechaNacimiento = fechaStr != null ? LocalDate.parse(fechaStr) : null;
         this.estado = doc.getString("estado");
     }
 
-    // Método para convertir a Document de MongoDB
-    public Document toDocument() {
-        Document doc = new Document();
-        if (id != null) {
-            doc.append("_id", id);
-        }
+    /*
+     * Antes cada modelo tenía su propio toDocument() completo.
+     * Ahora BaseModel maneja el _id y solo agregamos los campos propios aquí.
+     */
+    @Override
+    protected void agregarCampos(Document doc) {
         doc.append("nombre", nombre);
         doc.append("identificacion", identificacion);
         doc.append("email", email);
-        if (fechaNacimiento != null) {
-            doc.append("fecha_nacimiento", fechaNacimiento.toString());
-        }
+        doc.append("fecha_nacimiento", fechaNacimiento != null ? fechaNacimiento.toString() : null);
         doc.append("estado", estado);
-        return doc;
     }
+
+    // getId() y setId() ahora se heredan de BaseModel
 
     // Getters y Setters
-    public ObjectId getId() {
-        return id;
-    }
-
-    public void setId(ObjectId id) {
-        this.id = id;
-    }
 
     public String getNombre() {
         return nombre;
@@ -115,11 +106,15 @@ public class Estudiante {
                 id, nombre, identificacion, email, fechaNacimiento, estado);
     }
 
-    // Método para mostrar información resumida
-    public String toStringFormatted() {
+    /*
+     * Antes toStringFormatted() estaba completo aquí, ahora BaseModel lo llama
+     * y este método solo define el formato propio del estudiante.
+     */
+    @Override
+    protected String obtenerFormatoResumido() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return String.format("ID: %s | Nombre: %s | Identificación: %s | Email: %s | Fecha Nac.: %s | Estado: %s",
-                id != null ? id.toHexString().substring(18) : "N/A",
+                getShortId(),
                 nombre,
                 identificacion,
                 email,

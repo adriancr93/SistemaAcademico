@@ -3,20 +3,23 @@ package org.example.view;
 import org.bson.types.ObjectId;
 import org.example.model.Curso;
 import org.example.service.CursoService;
-import org.example.service.impl.CursoServiceImpl;
+import org.example.service.ServiceFactory;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Vista para la gestión de cursos
+ * Vista para la gestión de cursos.
+ * Ahora obtiene el servicio desde ServiceFactory en vez de instanciar directamente.
  */
 public class CursoView {
     
     private final CursoService cursoService;
     
+    // Antes: this.cursoService = new CursoServiceImpl();
+    // Ahora usa ServiceFactory para desacoplar
     public CursoView() {
-        this.cursoService = new CursoServiceImpl();
+        this.cursoService = ServiceFactory.getInstance().getCursoService();
     }
     
     /**

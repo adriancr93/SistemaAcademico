@@ -1,13 +1,13 @@
 package org.example.model;
 
 import org.bson.Document;
-import org.bson.types.ObjectId;
 
 /**
- * Entidad que representa un Curso en el sistema académico
+ * Curso - extiende BaseModel para no repetir código del id, toDocument, etc.
+ * Se aplicó Template Method: la lógica común queda en BaseModel.
  */
-public class Curso {
-    private ObjectId id;
+public class Curso extends BaseModel {
+    // Antes tenía: private ObjectId id; → ahora se hereda de BaseModel
     private String codigo;
     private String nombre;
     private String descripcion;
@@ -35,28 +35,18 @@ public class Curso {
         this.creditos = doc.getInteger("creditos", 1);
     }
 
-    // Método para convertir a Document de MongoDB
-    public Document toDocument() {
-        Document doc = new Document();
-        if (id != null) {
-            doc.append("_id", id);
-        }
+    // Antes cada modelo tenía su propio toDocument(). Ahora BaseModel maneja el _id.
+    @Override
+    protected void agregarCampos(Document doc) {
         doc.append("codigo", codigo);
         doc.append("nombre", nombre);
         doc.append("descripcion", descripcion);
         doc.append("creditos", creditos);
-        return doc;
     }
+
+    // getId() y setId() ahora se heredan de BaseModel
 
     // Getters y Setters
-    public ObjectId getId() {
-        return id;
-    }
-
-    public void setId(ObjectId id) {
-        this.id = id;
-    }
-
     public String getCodigo() {
         return codigo;
     }
@@ -95,10 +85,11 @@ public class Curso {
                 id, codigo, nombre, descripcion, creditos);
     }
 
-    // Método para mostrar información resumida
-    public String toStringFormatted() {
+    // Antes toStringFormatted() estaba aquí completo. Ahora BaseModel lo llama.
+    @Override
+    protected String obtenerFormatoResumido() {
         return String.format("ID: %s | Código: %s | Nombre: %s | Créditos: %d",
-                id != null ? id.toHexString().substring(18) : "N/A",
+                getShortId(),
                 codigo,
                 nombre,
                 creditos);

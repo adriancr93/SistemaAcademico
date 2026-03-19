@@ -1,13 +1,13 @@
 package org.example.model;
 
 import org.bson.Document;
-import org.bson.types.ObjectId;
 
 /**
- * Entidad que representa un Profesor en el sistema académico
+ * Profesor - extiende BaseModel para no repetir código del id, toDocument, etc.
+ * Se aplicó Template Method: la lógica común queda en BaseModel.
  */
-public class Profesor {
-    private ObjectId id;
+public class Profesor extends BaseModel {
+    // Antes tenía: private ObjectId id; → ahora se hereda de BaseModel
     private String nombre;
     private String identificacion;
     private String email;
@@ -26,6 +26,7 @@ public class Profesor {
         this.identificacion = identificacion;
         this.email = email;
         this.departamento = departamento;
+        // Ternario: si estado es null se pone "activo" por defecto
         this.estado = estado != null ? estado : "activo";
     }
 
@@ -39,29 +40,16 @@ public class Profesor {
         this.estado = doc.getString("estado");
     }
 
-    // Método para convertir a Document de MongoDB
-    public Document toDocument() {
-        Document doc = new Document();
-        if (id != null) {
-            doc.append("_id", id);
-        }
+    // Antes cada modelo tenía su propio toDocument(). Ahora BaseModel maneja el _id.
+    @Override
+    protected void agregarCampos(Document doc) {
         doc.append("nombre", nombre);
         doc.append("identificacion", identificacion);
         doc.append("email", email);
         doc.append("departamento", departamento);
         doc.append("estado", estado);
-        return doc;
     }
-
-    // Getters y Setters
-    public ObjectId getId() {
-        return id;
-    }
-
-    public void setId(ObjectId id) {
-        this.id = id;
-    }
-
+    
     public String getNombre() {
         return nombre;
     }
@@ -108,10 +96,11 @@ public class Profesor {
                 id, nombre, identificacion, email, departamento, estado);
     }
 
-    // Método para mostrar información resumida
-    public String toStringFormatted() {
+    // Antes toStringFormatted() estaba aquí completo. Ahora BaseModel lo llama.
+    @Override
+    protected String obtenerFormatoResumido() {
         return String.format("ID: %s | Nombre: %s | Identificación: %s | Email: %s | Departamento: %s | Estado: %s",
-                id != null ? id.toHexString().substring(18) : "N/A",
+                getShortId(),
                 nombre,
                 identificacion,
                 email,

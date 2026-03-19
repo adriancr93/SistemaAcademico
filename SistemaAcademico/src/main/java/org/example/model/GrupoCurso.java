@@ -4,10 +4,11 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 /**
- * Entidad que representa la relación entre un Grupo y un Curso
+ * GrupoCurso - relación entre Grupo y Curso.
+ * Extiende BaseModel para no repetir código del id, toDocument, etc.
  */
-public class GrupoCurso {
-    private ObjectId id;
+public class GrupoCurso extends BaseModel {
+    // Antes tenía: private ObjectId id; → ahora se hereda de BaseModel
     private ObjectId grupoId;
     private ObjectId cursoId;
 
@@ -27,26 +28,16 @@ public class GrupoCurso {
         this.cursoId = doc.getObjectId("curso_id");
     }
 
-    // Método para convertir a Document de MongoDB
-    public Document toDocument() {
-        Document doc = new Document();
-        if (id != null) {
-            doc.append("_id", id);
-        }
+    // Antes cada modelo tenía su propio toDocument(). Ahora BaseModel maneja el _id.
+    @Override
+    protected void agregarCampos(Document doc) {
         doc.append("grupo_id", grupoId);
         doc.append("curso_id", cursoId);
-        return doc;
     }
+
+    // getId() y setId() ahora se heredan de BaseModel
 
     // Getters y Setters
-    public ObjectId getId() {
-        return id;
-    }
-
-    public void setId(ObjectId id) {
-        this.id = id;
-    }
-
     public ObjectId getGrupoId() {
         return grupoId;
     }
@@ -69,11 +60,12 @@ public class GrupoCurso {
                 id, grupoId, cursoId);
     }
 
-    // Método para mostrar información resumida
-    public String toStringFormatted() {
+    // Antes toStringFormatted() estaba aquí. Ahora usa getShortId() de BaseModel.
+    @Override
+    protected String obtenerFormatoResumido() {
         return String.format("ID: %s | Grupo ID: %s | Curso ID: %s",
-                id != null ? id.toHexString().substring(18) : "N/A",
-                grupoId != null ? grupoId.toHexString().substring(18) : "N/A",
-                cursoId != null ? cursoId.toHexString().substring(18) : "N/A");
+                getShortId(),
+                getShortId(grupoId),
+                getShortId(cursoId));
     }
 }
